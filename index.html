@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/fat.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Location Classification</h1>
+					<h2>Using UN/ISO standards</h2>
+				</section>
+				<section data-background-image='images/cover.png' data-background-size='cover'></section>
+				</section>
+				<section>
+					<h1>Locality scale</h1>
+					<h2>What is the task?</h2>
+
+					<p class="fragment">Matching up data from various sources indexed by locality</p>
+					<p class="fragment">e.g. population of Belfast</p>
+				</section>
+				<section>
+					<h1>Locality scale</h1>
+					<h2>What is the problem?</h2>
+
+					<p class="fragment">Addressing is not unique or uniform, regionally or internationally</p>
+					<p class="fragment">Spelling, script, diacritics...</p>
+					<p class="fragment">Not concise or predictable format</p>
+					<p class="fragment">Not a single point or region</p>
+					<p class="fragment">May be a fluid definition</p>
+					<p class="fragment">(or technical definition may not be readily available)</p>
+				</section>
+				<section>
+					<h1>Requirements</h1>
+					<p class="fragment">Correlating data sets</p>
+					<p class="fragment">No licensing issues</p>
+					<p class="fragment">No third-party DB hits</p>
+					<p class="fragment">Imperfect matching OK, but not going to vanish</p>
+				</section>
+				<section>
+					<h1>What options are there?</h1>
+					<p class="fragment">Geonames<aside class="notes">foursquare; big; missing premium data; attribution license; otherwise really great</aside></p>
+					<p class="fragment">FIPS</p>
+					<p class="fragment">WOEID</p>
+					<p class="fragment">Post Codes</p>
+					<p class="fragment">Geohash / Open Postcode / etc.</p>
+					<p class="fragment">LOCODEs<aside class="notes">Weighted to internationally economically active areas</aside></p>
+				</section>
+				<section>
+					<h1>What's a LOCODE</h1>
+					<p class="fragment">~100k entries</p>
+					<p class="fragment">Since 1981 (Rec No. 18)</p>
+					<p class="fragment">Updated twice per year</p>
+					<p class="fragment">UN/LOCODE Data Maintenance Request system</p>
+					<p class="fragment">Data Management Requests (DMRs)</p><aside class="notes">6char username+pw</aside>
+					<aside class="notes">Belfast City Airport; Kilroot Power Station Jetty</aside>
+				</section>
+				<section>
+					<h1>Hierarchy</h1>
+					<img src='images/locodes.png'/>
+				</section>
+				<section>
+					<h1>The Good</h1>
+					<p class="fragment">International agency standard</p>
+					<p class="fragment">Maintained as supragovernmental policy</p>
+					<p class="fragment">Open data</p>
+					<p class="fragment">Not tainted by local IP issues</p>
+					<p class="fragment">Already have linked info</p>
+					<p class="fragment"><a href="https://github.com/datasets">github.com/datasets</a></p>
+				</section>
+				<section>
+					<h1>The Bad</h1>
+					<p class="fragment">Coordinate information intermittent</p>
+					<p class="fragment">Occasionally mismatched with hierarchy</p>
+					<p class="fragment">Politically complex</p><aside class="notes">No official LOCODE for Jerusalem - workaround, private alternative</aside>
+					<p class="fragment">Can change<aside class="notes">but seemingly more common at subdivision level - council reorganization</aside></p>
+				</section>
+				<section>
+					<h1>The Ugly</h1>
+					<p class="fragment">Can be obscure, overlapping, or transitional<aside class="notes">occasionally</aside></p>
+					<p class="fragment">No clear pre-defined boundaries</p>
+					<p class="fragment">Gets vague on administrative boundaries</p>
+				</section>
+				<section data-background-image='images/abbenrode.png' data-background-color='#98c5c1' data-background-size='cover'></section>
+				</section>
+				<section>
+					<h1>Solution</h1>
+					<p class="fragment">Textual matching</p>
+					<p class="fragment"><a href="https://github.com/seatgeek/fuzzywuzzy">seatgeek/fuzzywuzzy</a></p>
+					<p class="fragment">Multiple facets, weighted, inc. IATA</p>
+					<p class="fragment">Coordinate matching where available</p>
+				</section>
+				<section>
+					<img class='stretch' src="images/berlin-screenshot.png"/>
+
+					<aside class="notes">In progress, significant changes to be pushed in the next week. Collaboration, or joint projects sought</aside>
+				</section>
+				<section>
+					<h1><a href="https://github.com/flaxandteal/berlin">flaxandteal/berlin</a></h1>
+
+					<img class='stretch' src="images/berlin-screenshot-3.png"/>
+
+					<aside class="notes">In progress, significant changes to be pushed in the next week. Collaboration, or joint projects sought</aside>
+				</section>
+				<section>
+					<h1>Applications</h1>
+					<p class="fragment">IoT</p><aside class="notes">reliability; Berlin+LOCODE-sized DB sufficient for correlating basic info</aside>
+					<p class="fragment">Per-node processing</p>
+					<p class="fragment">Offline systems</p>
+					<p class="fragment">...or...</p>
+				</section>
+				<section>
+					<h1>Next problem...</h1>
+					<h2>Giving places meaning</h2>
+					<p class="fragment">Aggregation</p>
+					<p class="fragment">Reduces coordinate matching issues</p><aside class="notes">Data tied to a location may get matched to an obscure LOCODE (e.g. London), but this allows us to amalgamated regionally and look at London as a composition of LOCODEs</aside>
+					<p class="fragment">Areas composed of LOCODEs</p><aside class="notes"></aside>
+					<p class="fragment">Still no canonical geographic boundaries</p><aside class="notes">Allowing us to avoid tying to on-the-ground cartological meaning</aside>
+				</section>
+				<section>
+					<h1>What can be done?</h1>
+					<p class="fragment">UNECE Trade Facilitation Recommendation No. 16</p><aside class="notes">LOCODE conference in Geneva last year</aside>
+					<aside class="notes">
+						Focal points
+						http://www.unece.org/cefact/locode/focalpoint.html
+						http://www.unece.org/fileadmin/DAM/cefact/cf_forums/Geneva_2015/UNLOCODE_FP_ToR_2015-2.pdf
+						ECE/TRADE/C/CEFACT/2015/INF.1
+					</aside>
+				</section>
+				<section>
+					<h1>Questions</h1>
+					<p class="fragment"><aside class="notes">matching to this is client secret sauce</aside></p>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
